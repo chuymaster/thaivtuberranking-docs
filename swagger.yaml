@@ -79,7 +79,7 @@ paths:
     get:
       tags:
       - public
-      summary: get chart data
+      summary: Get chart data
       produces:
       - application/json
       parameters:
@@ -254,4 +254,3 @@ host: storage.googleapis.com
 basePath: /thaivtuberranking.appspot.com/channel_data
 schemes:
  - https
- 
