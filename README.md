@@ -1,4 +1,4 @@
-# API Documentation for Thai VTuber Ranking site
+# API Documentation for Thai VTuber Channel Ranking Data
 
 This repository hosts API documentation for Thai VTuber channel ranking data. The data is used in [Thai VTuber Ranking](https://vtuber.chuysan.com/) site which I operates.
 
@@ -17,4 +17,4 @@ Do note that the specification does not represent all interfaces perfectly. Plea
 
 ## Remarks
 
-Thank you https://github.com/peter-evans/swagger-github-pages for providing a template for using Swagger UI easily.
+Thanks https://github.com/peter-evans/swagger-github-pages for providing a template for using Swagger UI easily.
