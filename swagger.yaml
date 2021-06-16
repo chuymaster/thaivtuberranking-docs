@@ -97,6 +97,34 @@ paths:
               $ref: '#/definitions/ChannelChartData'
         404:
           description: not found
+  /live_videos.json:
+    get:
+      tags:
+      - public
+      summary: Get current live videos
+      produces:
+      - application/json
+      responses:
+        200:
+          description: live_status will always be 1
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LiveVideo'
+  /upcoming_videos.json:
+    get:
+      tags:
+      - public
+      summary: Get upcoming live videos.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: live_status will always be 2
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LiveVideo'
 definitions:
   Channel:
     type: object
@@ -137,11 +165,11 @@ definitions:
       published_at:
         type: string
         format: date-time
-        example: 2019-07-12T10:32:09Z
+        example: "2019-07-12T10:32:09Z"
       last_published_video_at:
         type: string
         format: date-time
-        example: 2021-01-15T18:00:27Z
+        example: "2021-01-15T18:00:27Z"
       updated_at:
         type: integer
         format: timestamp
@@ -164,7 +192,7 @@ definitions:
       date:
         type: string
         format: date
-        example: 2020-09-01
+        example: "2020-09-01"
       views:
         type: integer
         example: 1000
@@ -231,7 +259,7 @@ definitions:
       publishedAt:
         type: string
         format: date-time
-        example: 2021-01-18T14:33:54Z
+        example: "2021-01-18T14:33:54Z"
       isRebranded:
         type: boolean
         example: false
@@ -250,6 +278,62 @@ definitions:
       likeCount:
         type: integer
         example: 100
+  LiveVideo:
+    description: a live video info
+    type: object
+    required:
+    - id
+    - title
+    - channel_id
+    - description
+    - view_count
+    - thumbnail_image_url
+    - published_at
+    - live_status
+    properties:
+      id:
+        type: string
+        example: lDokdIbqu_I
+      title:
+        type: string
+        example: LIVE ย้อนหลัง
+      channel_id:
+        type: string
+        example: UC7iCSRt7Jej2XE0MaM9gPgg
+      description:
+        type: string
+        example: Video Description
+      thumbnail_image_url:
+        type: string
+        format: url
+        example: https://i.ytimg.com/vi/lDokdIbqu_I/hqdefault.jpg
+      published_at:
+        type: string
+        format: date-time
+        example: "2021-01-18T14:33:54Z"
+      live_status:
+        type: integer
+        example: 1
+        enum: [None, Live, Upcoming, Past]
+      live_schedule:
+        type: string
+        format: date-time
+        example: "2021-06-26T13:40:00Z"
+        description: The scheduled start time of the live. Not available if live_status is None
+      live_start:
+        type: string
+        format: date-time
+        example: "2021-06-26T13:40:00Z"
+        description: The actual start time of the live. Only available when live_status is Live or Past
+      live_end:
+        type: string
+        format: date-time
+        example: "2021-06-26T13:40:00Z"
+        description: The actual end time of the live. Only available when live_status is Past
+      live_concurrent_viewer_count:
+        type: integer
+        example: 100
+        description: The number of concurrent viewer. Only available when live_status is Live
 host: storage.googleapis.com
 basePath: /thaivtuberranking.appspot.com/channel_data
 schemes:
