@@ -4,7 +4,7 @@ This repository hosts API documentation for Thai VTuber channel ranking data. Th
 
 ## Swagger API Documentation
 
-See the API specification at https://chuymaster.github.io/thai-vtuber-ranking-docs/
+See the API specification at https://chuymaster.github.io/thaivtuberranking-docs/
 
 Do note that the specification does not represent all interfaces perfectly. Please verify the API by yourself.
 
