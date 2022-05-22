@@ -15,6 +15,10 @@ Do note that the specification does not represent all interfaces perfectly. Plea
 - Please create an issue if you find something you can improve.
 - Feature requests are also welcome. We may be able to develop together!
 
+## Editor
+
+Use https://editor.swagger.io/ to edit `swagger.yaml`.
+
 ## Remarks
 
 Thanks https://github.com/peter-evans/swagger-github-pages for providing a template for using Swagger UI easily.
