@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   description: An API that provides VTuber channel data for Thai VTuber Ranking site https://vtuber.chuysan.com/
   version: 1.0.0
@@ -14,124 +14,141 @@ info:
 
 # tags are used for organizing operations
 tags:
-- name: public
-  description: Operations available to regular developers. No authorization required.
+  - name: public v2
+    description: Operations available to regular developers. No authorization required. All users should migrate API to this version if available.
+  - name: public v1
+    description: Operations available to regular developers. No authorization required. Will be deprecated soon.
 
 paths:
-  /list.json:
+  /v2/channel_data/list.json:
     get:
       tags:
-      - public
+        - public v2
       summary: Get channel data list
-      description: Due to a limit from YouTube API, the data is divided into multiple arrays, which need to be combined on the client side.
+      description: Get the current data of all VTuber channels registered on the database.
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: success
           schema:
             type: array
             items:
-              $ref: '#/definitions/Channel'
-  /one_day_ranking.json:
+              $ref: "#/definitions/Channel"
+  /channel_data/list.json:
     get:
       tags:
-      - public
+        - public v1
+      summary: Get channel data list
+      description: Get the current data of all VTuber channels registered on the database. Due to a limit from YouTube API, the data is divided into multiple arrays, which need to be combined on the client side.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Channel"
+  /channel_data/one_day_ranking.json:
+    get:
+      tags:
+        - public v1
       summary: Get top video ranking in the past one day
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: success
           schema:
             type: array
             items:
-              $ref: '#/definitions/Video'
-  /three_days_ranking.json:
+              $ref: "#/definitions/Video"
+  /channel_data/three_days_ranking.json:
     get:
       tags:
-      - public
+        - public v1
       summary: Get top video ranking in the past three days
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: success
           schema:
             type: array
             items:
-              $ref: '#/definitions/Video'
-  /seven_days_ranking.json:
+              $ref: "#/definitions/Video"
+  /channel_data/seven_days_ranking.json:
     get:
       tags:
-      - public
+        - public v1
       summary: Get top video ranking in the past seven days
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: success
           schema:
             type: array
             items:
-              $ref: '#/definitions/Video'
-  /chart_data/{id}.json:
+              $ref: "#/definitions/Video"
+  /channel_data/chart_data/{id}.json:
     get:
       tags:
-      - public
+        - public v1
       summary: Get chart data
       produces:
-      - application/json
+        - application/json
       parameters:
-      - in: path
-        name: id
-        description: channel id
-        required: true
-        type: string
+        - in: path
+          name: id
+          description: channel id
+          required: true
+          type: string
       responses:
         200:
           description: success
           schema:
             type: array
             items:
-              $ref: '#/definitions/ChannelChartData'
+              $ref: "#/definitions/ChannelChartData"
         404:
           description: not found
-  /live_videos.json:
+  /channel_data/live_videos.json:
     get:
       tags:
-      - public
+        - public v1
       summary: Get current live videos
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: live_status will always be 1
           schema:
             type: array
             items:
-              $ref: '#/definitions/LiveVideo'
-  /upcoming_videos.json:
+              $ref: "#/definitions/LiveVideo"
+  /channel_data/upcoming_videos.json:
     get:
       tags:
-      - public
+        - public v1
       summary: Get upcoming live videos.
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: live_status will always be 2
           schema:
             type: array
             items:
-              $ref: '#/definitions/LiveVideo'
+              $ref: "#/definitions/LiveVideo"
 definitions:
   Channel:
     type: object
     required:
-    - channel_id
-    - updated_at
-    - is_rebranded
+      - channel_id
+      - updated_at
+      - is_rebranded
     properties:
       channel_id:
         type: string
@@ -183,11 +200,11 @@ definitions:
     description: a specific point of chart
     type: object
     required:
-    - date
-    - views
-    - subscribers
-    - comments
-    - videos
+      - date
+      - views
+      - subscribers
+      - comments
+      - videos
     properties:
       date:
         type: string
@@ -209,9 +226,9 @@ definitions:
     description: channel and data points
     type: object
     required:
-    - id
-    - title
-    - chartDataPoints
+      - id
+      - title
+      - chartDataPoints
     properties:
       id:
         type: string
@@ -222,23 +239,23 @@ definitions:
       chartDataPoints:
         type: array
         items:
-          $ref: '#/definitions/ChartDataPoint'
+          $ref: "#/definitions/ChartDataPoint"
   Video:
     description: a video info
     type: object
     required:
-    - id
-    - title
-    - channelId
-    - channelTitle
-    - thumbnailImageUrl
-    - publishedAt
-    - isRebranded
-    - viewCount
-    - commentCount
-    - dislikeCount
-    - favoriteCount
-    - likeCount
+      - id
+      - title
+      - channelId
+      - channelTitle
+      - thumbnailImageUrl
+      - publishedAt
+      - isRebranded
+      - viewCount
+      - commentCount
+      - dislikeCount
+      - favoriteCount
+      - likeCount
     properties:
       id:
         type: string
@@ -282,14 +299,14 @@ definitions:
     description: a live video info
     type: object
     required:
-    - id
-    - title
-    - channel_id
-    - description
-    - view_count
-    - thumbnail_image_url
-    - published_at
-    - live_status
+      - id
+      - title
+      - channel_id
+      - description
+      - view_count
+      - thumbnail_image_url
+      - published_at
+      - live_status
     properties:
       id:
         type: string
@@ -335,6 +352,6 @@ definitions:
         example: 100
         description: The number of concurrent viewer. Only available when live_status is Live
 host: storage.googleapis.com
-basePath: /thaivtuberranking.appspot.com/channel_data
+basePath: /thaivtuberranking.appspot.com
 schemes:
- - https
+  - https
