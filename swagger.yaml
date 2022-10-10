@@ -15,11 +15,26 @@ info:
 # tags are used for organizing operations
 tags:
   - name: public v2
-    description: Operations available to regular developers. No authorization required. All users should migrate API to this version if available.
+    description: Operations available to regular developers. No authorization required. Note that the actual response is wrapped inside `result` field.
   - name: public v1
-    description: Operations available to regular developers. No authorization required. Will be deprecated soon.
+    description: DEPRECATED - Operations available to regular developers. No authorization required.
 
 paths:
+  /v2/channel_data/simple_list.json:
+    get:
+      tags:
+        - public v2
+      summary: Get simple channel data list
+      description: Get the current data of all VTuber channels registered on the database, with less fields than `list.json`.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SimpleChannel"
   /v2/channel_data/list.json:
     get:
       tags:
@@ -35,6 +50,26 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Channel"
+  /v2/channel_data/detail/{id}.json:
+    get:
+      tags:
+        - public v2
+      summary: Get channel detail
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: channel id
+          required: true
+          type: string
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: "#/definitions/Channel"
+        404:
+          description: not found
   /v2/channel_data/one_day_ranking.json:
     get:
       tags:
@@ -77,10 +112,10 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Video"
-  /channel_data/chart_data/{id}.json:
+  /v2/channel_data/chart_data/{id}.json:
     get:
       tags:
-        - public v1
+        - public v2
       summary: Get chart data
       produces:
         - application/json
@@ -99,10 +134,10 @@ paths:
               $ref: "#/definitions/ChannelChartData"
         404:
           description: not found
-  /channel_data/live_videos.json:
+  /v2/channel_data/live_videos.json:
     get:
       tags:
-        - public v1
+        - public v2
       summary: Get current live videos
       produces:
         - application/json
@@ -113,10 +148,10 @@ paths:
             type: array
             items:
               $ref: "#/definitions/LiveVideo"
-  /channel_data/upcoming_videos.json:
+  /v2/channel_data/upcoming_videos.json:
     get:
       tags:
-        - public v1
+        - public v2
       summary: Get upcoming live videos.
       produces:
         - application/json
@@ -181,6 +216,46 @@ definitions:
         example: false
         description: a flag indicating whether the channel is rebranded from other channel. `false` represents that this channel is an original VTuber channel.
     description: YouTube Channel Info
+  SimpleChannel:
+    type: object
+    required:
+      - channel_id
+      - updated_at
+      - is_rebranded
+    properties:
+      channel_id:
+        type: string
+        example: UCqhhWjpw23dWhJ5rRwCCrMA
+      title:
+        type: string
+        example: Aisha Channel
+      thumbnail_icon_url:
+        type: string
+        format: url
+        example: https://yt3.ggpht.com/ytc/AAUvwnikS_My8HysQaH0PMs1Ei7d3fBTSgFfKi_hZt7q3g=s240-c-k-c0x00ffffff-no-rj
+      subscribers:
+        type: integer
+        example: 269000
+      views:
+        type: integer
+        example: 18192572
+      published_at:
+        type: string
+        format: date-time
+        example: "2019-07-12T10:32:09Z"
+      last_published_video_at:
+        type: string
+        format: date-time
+        example: "2021-01-15T18:00:27Z"
+      updated_at:
+        type: integer
+        format: timestamp
+        example: 1611039613975
+      is_rebranded:
+        type: boolean
+        example: false
+        description: a flag indicating whether the channel is rebranded from other channel. `false` represents that this channel is an original VTuber channel.
+    description: YouTube Channel Info
   ChartDataPoint:
     description: a specific point of chart
     type: object
@@ -213,7 +288,7 @@ definitions:
     required:
       - id
       - title
-      - chartDataPoints
+      - chart_data_points
     properties:
       id:
         type: string
@@ -221,7 +296,7 @@ definitions:
       title:
         type: string
         example: Aisha Channel
-      chartDataPoints:
+      chart_data_points:
         type: array
         items:
           $ref: "#/definitions/ChartDataPoint"
